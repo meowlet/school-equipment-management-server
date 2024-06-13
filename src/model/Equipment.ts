@@ -7,6 +7,8 @@ const equipmentSchema = new Schema<IEquipment>(
     description: { type: String },
     status: { type: String, required: true },
     currentLocationId: { type: Schema.Types.ObjectId, ref: "Location" },
+    supplier: { type: Schema.Types.ObjectId, ref: "Supplier" },
+    type: { type: Schema.Types.ObjectId, ref: "EquipmentType" },
   },
   {
     timestamps: true,
