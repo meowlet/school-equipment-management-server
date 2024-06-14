@@ -1,11 +1,16 @@
 import Elysia, { t } from "elysia";
+import { AuthPlugin } from "../../plugin/AuthPlugin";
+import { JsonResponse } from "../../util/JsonResponse";
 
 export const GetEquipmentController = (app: Elysia) =>
   app
+    .use(AuthPlugin)
     .get(
       "/",
-      ({ query }) => {
-        return query;
+      async ({ query, equipmentRepository }) => {
+        return new JsonResponse(
+          await equipmentRepository.getEquipments(),
+        ).processData();
       },
       {
         query: t.Object({
