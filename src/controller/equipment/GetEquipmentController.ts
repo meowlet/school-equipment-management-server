@@ -13,7 +13,7 @@ export const GetEquipmentController = (app: Elysia) =>
           type: t.Optional(t.String()),
           sortBy: t.Optional(t.String()),
           limit: t.String({ default: "10" }),
-          offset: t.String({default: "0"}),
+          offset: t.String({ default: "0" }),
         }),
       },
     )
