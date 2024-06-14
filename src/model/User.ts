@@ -4,10 +4,10 @@ import bcrypt from "bcrypt";
 
 const userSchema = new Schema<IUser>(
   {
-    username: { type: String, required: true, unique: true },
+    userName: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
-    email: { type: String },
-    fullName: { type: String },
+    email: { type: String, required: true, unique: true },
+    fullName: { type: String, required: true },
     roleId: { type: Schema.Types.ObjectId, ref: "Role" },
   },
   {
@@ -17,7 +17,7 @@ const userSchema = new Schema<IUser>(
 
 userSchema.pre("save", async function (next) {
   const saltRound = 8;
-  if (this.isModified("password")) {
+  if (this.isModified("passwordHash")) {
     this.passwordHash = await bcrypt.hash(this.passwordHash, saltRound);
   }
   next();

@@ -11,5 +11,8 @@ const equipmentTypeSchema = new Schema<IEquipmentType>(
     timestamps: true,
   },
 );
- 
-export const EquipmentType = model<IEquipmentType>("EquipmentType", equipmentTypeSchema);
+
+export const EquipmentType = model<IEquipmentType>(
+  "EquipmentType",
+  equipmentTypeSchema,
+);
