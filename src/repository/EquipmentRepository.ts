@@ -1,7 +1,9 @@
+import { NotFoundError } from "elysia";
 import { Equipment } from "../model/Equipment";
 import User from "../model/User";
 import { IEquipment, IRole } from "../util/Entity";
 import { Resource, Action } from "../util/Enum";
+import { ForbiddenError } from "../util/Error";
 
 export class EquipmentRepository {
   private userID: string;
@@ -16,7 +18,7 @@ export class EquipmentRepository {
     }>("roles");
 
     if (!user) {
-      throw new Error("User not found");
+      throw new ForbiddenError("User not found");
     }
 
     return user;
@@ -32,7 +34,7 @@ export class EquipmentRepository {
       if (permission) return;
     }
 
-    throw new Error("Permission denied");
+    throw new ForbiddenError("Permission denied");
   }
 
   async createEquipment(equipment: IEquipment) {
