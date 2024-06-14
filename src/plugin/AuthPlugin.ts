@@ -1,6 +1,7 @@
 import jwt from "@elysiajs/jwt";
 import Elysia from "elysia";
 import { EquipmentRepository } from "../repository/EquipmentRepository";
+import { AuthorizationError } from "../util/Error";
 
 export const AuthPlugin = async (app: Elysia) =>
   app
@@ -13,7 +14,7 @@ export const AuthPlugin = async (app: Elysia) =>
     .derive(async ({ headers, jwt }) => {
       const token = headers["authorization"]?.replace("Bearer ", "");
       if (!token) {
-        throw new Error("Please authenticate");
+        throw new AuthorizationError("Please authenticate");
       }
       const decodedToken = await jwt.verify(token);
       if (!decodedToken) {
