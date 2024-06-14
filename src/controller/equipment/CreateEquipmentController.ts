@@ -3,12 +3,12 @@ import { Status } from "../../util/Enum";
 import { EquipmentRepository } from "../../repository/EquipmentRepository";
 import { Equipment } from "../../model/Equipment";
 import { Types } from "mongoose";
+import { AuthPlugin } from "../../plugin/AuthPlugin";
 
 export const CreateEquipmentController = (app: Elysia) =>
-  app.post(
+  app.use(AuthPlugin).post(
     "/",
-    async ({ body }) => {
-      const equipmentRepository = new EquipmentRepository("userID");
+    async ({ body, equipmentRepository }) => {
       const equipment = new Equipment({
         equipmentName: body.name,
         description: body.description,
