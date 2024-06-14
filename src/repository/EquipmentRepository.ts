@@ -39,7 +39,11 @@ export class EquipmentRepository {
     Equipment.create(equipment);
   }
 
-  async getEquipment(equipmentID: string) {
+  async getEquipments() {
+    return Equipment.find();
+  }
+
+  async getEquipmentByID(equipmentID: string) {
     return Equipment.findOne({ _id: equipmentID });
   }
 }
