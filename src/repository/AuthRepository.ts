@@ -1,11 +1,18 @@
+import bcrypt from "bcrypt";
 import User from "../model/User";
 import { IUser } from "../util/Entity";
-import bcrypt from "bcrypt";
+import { AuthorizationError, ConflictedError } from "../util/Error";
 
 export class AuthRepository {
   async signUp(user: IUser) {
     console.log(user);
-    await User.create(user);
+    try {
+      await User.create(user);
+    } catch (error: any) {
+      if (error.name === "MongoServerError" && error.code === 11000) {
+        throw new ConflictedError("Username or email already exists!");
+      }
+    }
   }
 
   async signIn(identifier: string, password: string) {
@@ -14,7 +21,7 @@ export class AuthRepository {
     });
 
     if (!existingUser) {
-      throw new Error(`User not found!`);
+      throw new AuthorizationError(`User not found!`);
     }
 
     const passwordMatched = bcrypt.compareSync(
@@ -25,7 +32,7 @@ export class AuthRepository {
     if (passwordMatched) {
       return existingUser;
     } else {
-      throw new Error("Password does not match!");
+      throw new AuthorizationError("Password does not match!");
     }
   }
 }
