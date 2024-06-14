@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { Resource, Action } from "./Enum";
 
 // Interface for Users
 export interface IUser {
@@ -16,24 +17,25 @@ export interface IEquipment {
   status: string;
   currentLocationId: Types.ObjectId;
   supplier: Types.ObjectId;
+  price: number;
   type: Types.ObjectId;
 }
 
 // Interface for Supplier
 export interface ISupplier {
-  name: string;              
-  email: string;           
-  phoneNumber: string;    
-  address: string;       
-  website?: string;     
-  notes?: string;      
+  name: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  website?: string;
+  notes?: string;
 }
 
-//Interface for EquipmentType 
+//Interface for EquipmentType
 export interface IEquipmentType {
   typeCode: string;
   typeName: string;
-  description?: string
+  description?: string;
 }
 
 // Interface for LoanHistory
@@ -59,6 +61,7 @@ export interface ILocation {
 
 // Interface for Roles
 export interface IRole {
-  roleName: string;
+  name: string;
   description?: string;
+  permissions: { resource: Resource; actions: Action[] }[];
 }
