@@ -6,10 +6,13 @@ export enum Action {
 
 export enum Resource {
   USER = "user",
-  POST = "post",
+  EQUIPMENT = "equipment",
+  SUPPLIER = "supplier",
+  EQUIPMENT_TYPE = "equipment-type",
+  LOAN_HISTORY = "loan-history",
+  MAINTENANCE = "maintenance",
+  LOCATION = "location",
   ROLE = "role",
-  COMMENT = "comment",
-  FICTION = "fiction",
 }
 
 export enum Status {
