@@ -3,22 +3,24 @@ import { Equipment } from "../model/Equipment";
 import User from "../model/User";
 import { IEquipment, IRole } from "../util/Entity";
 import { Resource, Action } from "../util/Enum";
-import { ForbiddenError } from "../util/Error";
+import { AuthorizationError, ForbiddenError } from "../util/Error";
+import { EquipmentQuery } from "../util/QueryInterface";
+import { JsonResponse } from "../util/JsonResponse";
 
 export class EquipmentRepository {
-  private userID: string;
+  public userId: string;
 
   constructor(userID: string) {
-    this.userID = userID;
+    this.userId = userID;
   }
 
   async getUser() {
-    const user = await User.findOne({ _id: this.userID }).populate<{
+    const user = await User.findOne({ _id: this.userId }).populate<{
       roles: IRole[];
     }>("roles");
 
     if (!user) {
-      throw new ForbiddenError("User not found");
+      throw new AuthorizationError("User not found");
     }
 
     return user;
@@ -41,11 +43,69 @@ export class EquipmentRepository {
     Equipment.create(equipment);
   }
 
-  async getEquipments() {
-    return Equipment.find();
-  }
+  async getEquipments(query: EquipmentQuery): Promise<IEquipment[]> {
+    const page = query.page || 1;
+    const limit = query.limit || 10;
+    const skip = (page - 1) * limit;
 
+    const mongooseQuery: Record<string, any> = {};
+
+    if (query.equipmentName) {
+      mongooseQuery.equipmentName = {
+        $regex: query.equipmentName,
+        $options: "i",
+      };
+    }
+
+    if (query.status) {
+      mongooseQuery.status = query.status;
+    }
+
+    if (query.location) {
+      mongooseQuery.location = { $in: query.location };
+    }
+
+    if (query.createdBy) {
+      mongooseQuery.createdBy = query.createdBy;
+    }
+
+    if (query.supplier) {
+      mongooseQuery.supplier = { $in: query.supplier };
+    }
+
+    if (query.minPrice !== undefined || query.maxPrice !== undefined) {
+      mongooseQuery.price = {};
+
+      if (query.minPrice !== undefined) {
+        mongooseQuery.price.$gte = query.minPrice;
+      }
+
+      if (query.maxPrice !== undefined) {
+        mongooseQuery.price.$lte = query.maxPrice;
+      }
+    }
+
+    if (query.type) {
+      mongooseQuery.type = query.type;
+    }
+
+    const equipments = await Equipment.find(mongooseQuery)
+      .skip(skip)
+      .limit(limit)
+      .populate("type")
+      .populate("location")
+      .populate("supplier");
+
+    if (!equipments) {
+      throw new NotFoundError("No equipment found");
+    }
+    return new JsonResponse(equipments).processData();
+  }
   async getEquipmentByID(equipmentID: string) {
-    return Equipment.findOne({ _id: equipmentID });
+    const equipment = await Equipment.findOne({ _id: equipmentID });
+    if (!equipment) {
+      throw new NotFoundError("Equipment not found");
+    }
+    return new JsonResponse(equipment).processData();
   }
 }
