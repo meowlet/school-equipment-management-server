@@ -10,12 +10,10 @@ const roleSchema = new Schema<IRole>(
       {
         resource: {
           type: String,
-          enum: Object.values(Resource),
+          enum: Resource,
           required: true,
         },
-        actions: [
-          { type: String, enum: Object.values(Action), required: true },
-        ],
+        actions: [{ type: String, enum: Action, required: true }],
         _id: false,
       },
     ],

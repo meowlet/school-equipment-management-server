@@ -3,8 +3,8 @@ import { IEquipmentType } from "../util/Entity";
 
 const equipmentTypeSchema = new Schema<IEquipmentType>(
   {
-    typeCode: { type: String, required: true },
     typeName: { type: String, required: true },
+    typeCode: { type: String, required: true },
     description: { type: String },
   },
   {

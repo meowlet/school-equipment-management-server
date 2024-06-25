@@ -11,4 +11,4 @@ const locationSchema = new Schema<ILocation>(
   },
 );
 
-export const LocationModel = model<ILocation>("Location", locationSchema);
+export const Location = model<ILocation>("Location", locationSchema);

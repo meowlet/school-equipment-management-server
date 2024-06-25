@@ -28,18 +28,22 @@ export const ErrorPlugin = (app: Elysia) =>
         default: {
           if (code === "NOT_FOUND") {
             set.status = 404;
-            return "Not Found :(";
+            return getErrorMessage(error);
           } else if (code === "VALIDATION") {
             set.status = 400;
+            console.log(getErrorMessage(error));
             return "Validation Error :(";
           } else if (code === "PARSE") {
             set.status = 422;
+            console.log(getErrorMessage(error));
             return "Parse Error :(";
           } else if (code === "UNKNOWN") {
             set.status = 520;
-            return "Message: " + getErrorMessage(error);
+            console.log(getErrorMessage(error));
+            return "An unknown error occured :(";
           } else {
             set.status = 500;
+            console.log(getErrorMessage(error));
             return new Response(`Internal Server Error`);
           }
         }
