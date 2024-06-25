@@ -15,7 +15,8 @@ export interface IEquipment {
   equipmentName: string;
   description: string;
   status: string;
-  currentLocationId: Types.ObjectId;
+  location: Types.ObjectId;
+  createdBy: Types.ObjectId;
   supplier: Types.ObjectId;
   price: number;
   type: Types.ObjectId;
@@ -33,8 +34,8 @@ export interface ISupplier {
 
 //Interface for EquipmentType
 export interface IEquipmentType {
-  typeCode: string;
   typeName: string;
+  typeCode: string;
   description: string;
 }
 
