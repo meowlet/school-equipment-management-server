@@ -2,8 +2,15 @@ import { EquipmentType } from "../model/EquipmentType";
 import { IEquipmentType } from "../util/Entity";
 
 export class EquipmentTypeRepository {
+  public userId: string;
+
+  constructor(userID: string) {
+    this.userId = userID;
+  }
+
   async createType(type: IEquipmentType) {
-    await EquipmentType.create(type);
+    const nigger = await EquipmentType.create(type);
+    console.log(nigger);
   }
 
   async getTypes() {

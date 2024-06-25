@@ -1,4 +1,4 @@
-import { Elysia } from "elysia";
+import { Elysia, NotFoundError } from "elysia";
 import { Application } from "./Application";
 import "./database/MongoDBSetup";
 import { ErrorPlugin } from "./plugin/ErrorPlugin";
