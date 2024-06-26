@@ -1,11 +1,9 @@
-import { NotFoundError } from "elysia";
-import { Equipment } from "../model/Equipment";
-import User from "../model/User";
-import { IEquipment, ILocation, IRole, ISupplier } from "../util/Entity";
-import { Resource, Action } from "../util/Enum";
-import { AuthorizationError, ForbiddenError } from "../util/Error";
-import { Location } from "../model/Location";
 import { Supplier } from "../model/Supplier";
+import User from "../model/User";
+import { IRole, ISupplier } from "../util/Entity";
+import { Action, Resource } from "../util/Enum";
+import { AuthorizationError, ForbiddenError } from "../util/Error";
+import { JsonResponse } from "../util/JsonResponse";
 
 export class SupplierRepository {
   public userId: string;
@@ -41,5 +39,9 @@ export class SupplierRepository {
 
   async createSupplier(location: ISupplier) {
     Supplier.create(location);
+  }
+
+  async getSuppliers() {
+    return new JsonResponse(await Supplier.find()).processData();
   }
 }

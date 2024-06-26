@@ -5,6 +5,7 @@ import { IEquipment, ILocation, IRole } from "../util/Entity";
 import { Resource, Action } from "../util/Enum";
 import { AuthorizationError, ForbiddenError } from "../util/Error";
 import { Location } from "../model/Location";
+import { JsonResponse } from "../util/JsonResponse";
 
 export class LocationRepository {
   public userId: string;
@@ -40,5 +41,9 @@ export class LocationRepository {
 
   async createLocation(location: ILocation) {
     Location.create(location);
+  }
+
+  async getLocations() {
+    return new JsonResponse(await Location.find()).processData();
   }
 }
