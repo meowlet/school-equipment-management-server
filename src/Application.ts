@@ -7,6 +7,7 @@ import { AddRoleController } from "./controller/role/AddRoleController";
 import { CreateLocationController } from "./controller/location/CreateLocationController";
 import { CreateSupplierController } from "./controller/supplier/CreateSupplierController";
 import { CreateEquipmentTypeController } from "./controller/type/CreateEquipmentTypeController";
+import { GetEquipmentTypeController } from "./controller/type/GetEquipmentTypeController";
 
 export const Application = new Elysia()
   .group("/equipment", (app) =>
@@ -14,6 +15,8 @@ export const Application = new Elysia()
   )
   .group("/location", (app) => app.use(CreateLocationController))
   .group("/supplier", (app) => app.use(CreateSupplierController))
-  .group("/type", (app) => app.use(CreateEquipmentTypeController))
+  .group("/type", (app) =>
+    app.use(CreateEquipmentTypeController).use(GetEquipmentTypeController),
+  )
   .group("/auth", (app) => app.use(SignInController).use(SignUpController))
   .group("/role", (app) => app.use(AddRoleController));
